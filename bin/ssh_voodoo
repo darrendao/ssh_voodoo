@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+$:.unshift File.join(File.dirname(__FILE__), "..", "lib")
+
+require 'ssh_voodoo'
+require 'optparse'
+
+options = {}    # options for how to running ssh_voodoo
+servers = nil
+cmd = nil
+
+opts = OptionParser.new(nil, 24, '  ')
+opts.banner = 'Usage: ssh_voodoo [options]'
+opts.on('--servers', '-s', '=SERVERS', Array, 'Servers to apply the actions to') do |opt|
+  servers = opt
+end
+opts.on('--debug', 'Print lots of messages') do |opt|
+  options["debug"] = opt
+end
+opts.on('--use-ssh-key [FILE]', 'Use ssh key instead of password') do |opt|
+  options["use-ssh-key"] = true
+  options["ssh-key"] = opt
+end
+
+opts.on('--command', '-c', '=STRING', 'What command to run on the remote server') do |opt|
+  cmd = opt
+end
+opts.on('--username', '=USERNAME', 'What username to use for connecting to remote servers') do |opt|
+  options["username"] = opt
+end
+opts.on('--dw', '=INTEGER', 'Number of workers for parallel ssh connections') do |opt|
+  options["max-worker"] = opt.to_i
+end
+opts.on('--connectiontimeout', '=INTEGER', 'Connection timeout') do |opt|
+  options["connectiontimeout"] = opt.to_i
+end
+opts.on_tail("-h", "--help", "Show this message") do
+  puts opts
+  exit 
+end
+
+leftovers = opts.parse(ARGV)
+
+if cmd.nil? or servers.nil?
+  puts opts
+  exit
+end
+
+ssh_voodoo = SshVoodoo.new(options)
+ssh_voodoo.perform_magic(cmd, servers)
