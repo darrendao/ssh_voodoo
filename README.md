@@ -11,7 +11,7 @@ It&apos;s hosted on rubygems.org
 ```
    ssh_voodoo -h
    Usage: ssh_voodoo [options]
-     -s, --servers=SERVERS    Servers to apply the actions to
+     -s, --servers=SERVERS    Servers to apply the actions to. Comma-separated list, or path to file containing list of servers (newline delimited)
          --debug              Print lots of messages
          --use-ssh-key [FILE] Use ssh key instead of password
      -c, --command=STRING     What command to run on the remote server
