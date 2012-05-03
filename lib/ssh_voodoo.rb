@@ -184,9 +184,15 @@ class SshVoodoo
       end
     end
     tp.shutdown
-    puts "Exit statuses: "
-    puts statuses.inspect
-    
+  
+    failed =  statuses.reject{|k,v| v == 0}.keys
+    if failed.empty?
+      puts "Command ran successfully on all hosts."
+    else
+      puts "Command failed to run on the following hosts:\n"
+      puts failed
+    end
+
     return statuses
   end
 end
