@@ -83,7 +83,7 @@ class SshVoodoo
 
       begin
         Net::SSH.start(server, username, params) do |ssh|
-          puts "Connecting to #{server}"
+          # puts "Connecting to #{server}"
           ch = ssh.open_channel do |channel|
             # now we request a "pty" (i.e. interactive) session so we can send data
             # back and forth if needed. it WILL NOT WORK without this, and it has to
